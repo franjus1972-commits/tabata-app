@@ -10,53 +10,19 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/flet-dev/flet-build:latest
 
     steps:
-      # 1. Obtener el código
       - name: Checkout del código
         uses: actions/checkout@v4
 
-      # 2. Configurar Java JDK 17
-      - name: Configurar Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      # 3. Configurar Python
-      - name: Configurar Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      # 4. Configurar Flutter
-      - name: Configurar Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-
-      # 5. Instalar Flet y CLI de empaquetado
-      - name: Instalar Flet y CLI
-        run: |
-          python -m pip install --upgrade pip
-          pip install flet flet-cli
-
-      # 6. Crear proyecto base e integrar código
-      - name: Preparar proyecto Flet
-        run: |
-          flet create temp_app
-          cp main.py temp_app/src/main.py
-          cd temp_app
-
-      # 7. Compilar APK desde Flutter
       - name: Compilar APK
         run: |
-          cd temp_app
           flet build apk
 
-      # 8. Subir el paquete generado
       - name: Subir el archivo APK
         uses: actions/upload-artifact@v4
         with:
           name: tabata-app-apk
-          path: temp_app/build/apk/*.apk
+          path: build/apk/*.apk
