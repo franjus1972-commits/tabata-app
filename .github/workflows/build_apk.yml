@@ -15,6 +15,11 @@ jobs:
       - name: Checkout del código
         uses: actions/checkout@v4
 
+      - name: Instalar librerías del sistema para Flet
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblldb-dev
+
       - name: Configurar Python
         uses: actions/setup-python@v5
         with:
@@ -31,14 +36,14 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Instalar dependencias
+      - name: Instalar Flet
         run: |
           python -m pip install --upgrade pip
           pip install flet
 
       - name: Compilar APK
         run: |
-          flet build apk
+          flet build apk --verbose
 
       - name: Subir el archivo APK
         uses: actions/upload-artifact@v4
