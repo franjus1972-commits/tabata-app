@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "tabata-app"
+version = "0.1.0"
+description = "Cronómetro Tabata en Flet"
+authors = ["Tu Nombre <correo@example.com>"]
+
+[tool.flet]
+main = "main.py"
+
+[tool.flet.app]
+name = "Cronometro Tabata"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
