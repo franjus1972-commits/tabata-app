@@ -12,45 +12,38 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Obtener el código
       - name: Checkout del código
         uses: actions/checkout@v4
 
-      # 2. Configurar Java JDK 17
-      - name: Configurar Java JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      # 3. Configurar Android SDK
-      - name: Configurar Android SDK
-        uses: android-actions/setup-android@v3
-
-      # 4. Configurar Flutter
-      - name: Configurar Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-
-      # 5. Configurar Python
       - name: Configurar Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      # 6. Instalar Flet
-      - name: Instalar dependencias
+      - name: Configurar Java JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Configurar Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Instalar Flet
         run: |
           python -m pip install --upgrade pip
           pip install flet
 
-      # 7. Compilar la APK
+      - name: Crear estructura de proyecto Flet
+        run: |
+          flet create --template app . || true
+
       - name: Compilar APK
         run: |
           flet build apk
 
-      # 8. Subir el APK resultante a Artifacts
       - name: Subir el archivo APK
         uses: actions/upload-artifact@v4
         with:
